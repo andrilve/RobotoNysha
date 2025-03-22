@@ -1,0 +1,30 @@
+var motor =
+    require('@amperka/motor');
+var leftMotor = motor.connect(motor.MotorShield.M1);
+var rightMotor = motor.connect(motor.MotorShield.M2)
+
+leftMotor.write(-0.5);
+rightMotor.write(0.5);
+
+var RADIUS = 31;
+var WHEEL_LENGHT = 2*Math.PI*RADIUS;
+var STEP= 1/12;
+
+var rotationsLeft = 0;
+var rotationsRight = 0;
+
+var leftSensor = require('@amperka/digital-line-sensor').connect(P10);
+var rightSensor = require('@amperka/digital-line-sensor').connect(P11);
+
+leftSensor.on('white', function() {
+  rotationsLeft = rotationsLeft +STEP;
+  var distanceLeft = rotationsLeft * WHEEL_LENGHT;
+  print(distanceLeft, 'mm');
+});
+
+rightSensor.on('white', function() {
+  rotationsRight = rotationsRight +STEP;
+  var distanceRight = rotationsRight * WHEEL_LENGHT;
+  print(distanceRight, 'mm');  
+});
+print('---');
